@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # quarkus-crud-example
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
@@ -66,3 +67,7 @@ If you want to learn more about building native executables, please consult <htt
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+=======
+# crud-example
+CRUD example using Quarkus
+>>>>>>> e17928ab5634be3ca9d5e40bb20228eb9be2b3f1
