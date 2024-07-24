@@ -1,17 +1,14 @@
 package com.w3bootstrap.Person.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.UUID;
 
-import org.jboss.resteasy.reactive.RestForm;
+import java.util.List;
+
+
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import com.w3bootstrap.Person.AppForm.PersonForm;
-import com.w3bootstrap.Person.Common.ErrorResponse;
+
+import com.w3bootstrap.Person.Common.FileUploadResponse;
 import com.w3bootstrap.Person.DTO.PersonDTO;
 import com.w3bootstrap.Person.Entity.PersonEntity;
 import com.w3bootstrap.Person.Mapper.PersonMapper;
@@ -44,12 +41,23 @@ public class PersonService {
         return mapper.toDTO(entity);
     }
 
-    public Response formEntry(PersonForm formData) throws IOException {
+    public Response formEntry(PersonForm formData){
         // Get the uploaded file
         FileUpload uploadedFile = formData.getProfilePicture();
 
-        repository.formFileUpload(uploadedFile);
-
+        FileUploadResponse result = repository.formFileUpload(uploadedFile);
+        
+        if(result.isSuccess()) {
+            PersonEntity entity = new PersonEntity();
+            entity.setName(formData.getName());
+            entity.setAge(formData.getAge());
+            entity.setProfilePicture(result.getFilename());
+            repository.persist(entity);
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        
+        return Response.status(Response.Status.ACCEPTED).build();
 
     }
 

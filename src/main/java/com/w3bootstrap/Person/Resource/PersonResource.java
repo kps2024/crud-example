@@ -6,7 +6,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
-import com.arjuna.ats.arjuna.common.recoveryPropertyManager;
+
 import com.w3bootstrap.Person.AppForm.PersonForm;
 import com.w3bootstrap.Person.DTO.PersonDTO;
 import com.w3bootstrap.Person.Service.PersonService;

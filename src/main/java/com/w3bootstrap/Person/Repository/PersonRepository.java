@@ -8,17 +8,15 @@ import java.util.UUID;
 
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
-import com.w3bootstrap.Person.AppForm.PersonForm;
-import com.w3bootstrap.Person.Common.ErrorResponse;
+import com.w3bootstrap.Person.Common.FileUploadResponse;
 import com.w3bootstrap.Person.Entity.PersonEntity;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class PersonRepository implements PanacheRepositoryBase<PersonEntity, Long> {
-    public Response formFileUpload(FileUpload uploadedFile){
+    public FileUploadResponse formFileUpload(FileUpload uploadedFile){
         // Retrieve the original filename
         String originalFilename = uploadedFile.fileName();
 
@@ -37,22 +35,24 @@ public class PersonRepository implements PanacheRepositoryBase<PersonEntity, Lon
             }
         } catch (IOException e) {
             //e.printStackTrace();
-            ErrorResponse errorResponse = new ErrorResponse("Failed to upload marksheet: " + e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+            // ErrorResponse errorResponse = new ErrorResponse("Failed to upload marksheet: " + e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+            // return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build().toString();
+            return new FileUploadResponse(null, false, "Failed to create upload directory");
+            
         }
 
         // Save the file with the new UUID filename
         Path filePath = uploadPath.resolve(newFilename);
         try {
             Files.copy(uploadedFile.uploadedFile().toAbsolutePath(), filePath);
-            return Response.status(Response.Status.ACCEPTED).build();
         } catch (IOException e) {
             e.printStackTrace();
-            ErrorResponse errorResponse = new ErrorResponse("Failed to upload marksheet: " + e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+            // ErrorResponse errorResponse = new ErrorResponse("Failed to upload marksheet: " + e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+            // return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorResponse).build();
+            return new FileUploadResponse(null, false, "Failed to save file");
         }
 
-        
+        return new FileUploadResponse(newFilename, true, "File uploaded successfully");
 
     }
 }
