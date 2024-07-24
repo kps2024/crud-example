@@ -41,24 +41,22 @@ public class PersonService {
         return mapper.toDTO(entity);
     }
 
-    public Response formEntry(PersonForm formData){
+    public Boolean formEntry(PersonForm formData){
         // Get the uploaded file
-        FileUpload uploadedFile = formData.getProfilePicture();
+        FileUpload uploadedFile = formData.profilePicture;
 
         FileUploadResponse result = repository.formFileUpload(uploadedFile);
         
         if(result.isSuccess()) {
             PersonEntity entity = new PersonEntity();
-            entity.setName(formData.getName());
-            entity.setAge(formData.getAge());
+            entity.setName(formData.name);
+            entity.setAge(formData.age);
             entity.setProfilePicture(result.getFilename());
             repository.persist(entity);
         } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return false;
         }
-        
-        return Response.status(Response.Status.ACCEPTED).build();
-
+        return true;
     }
 
 }
