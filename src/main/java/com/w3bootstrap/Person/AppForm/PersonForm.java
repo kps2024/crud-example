@@ -25,4 +25,10 @@ public class PersonForm {
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     @Schema(type = SchemaType.STRING, format = "binary", description = "Uploaded image file", implementation = String.class)
     public FileUpload profilePicture;
+
+    @RestForm
+    @PartType(MediaType.APPLICATION_OCTET_STREAM)
+    @Schema(type = SchemaType.STRING, format = "binary", description = "Uploaded document file", implementation = String.class)
+    public FileUpload document;
 }
+

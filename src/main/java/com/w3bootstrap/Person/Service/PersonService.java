@@ -43,15 +43,18 @@ public class PersonService {
 
     public Boolean formEntry(PersonForm formData){
         // Get the uploaded file
-        FileUpload uploadedFile = formData.profilePicture;
+        FileUpload profilePicture = formData.profilePicture;
+        FileUpload document = formData.document;
 
-        FileUploadResponse result = repository.formFileUpload(uploadedFile);
+        FileUploadResponse _profilePicture = repository.formFileUpload(profilePicture);
+        FileUploadResponse _document = repository.formFileUpload(document);
         
-        if(result.isSuccess()) {
+        if(_profilePicture.isSuccess() & _document.isSuccess()) {
             PersonEntity entity = new PersonEntity();
             entity.setName(formData.name);
             entity.setAge(formData.age);
-            entity.setProfilePicture(result.getFilename());
+            entity.setProfilePicture(_profilePicture.getFilename());
+            entity.setDocument(_document.getFilename());
             repository.persist(entity);
         } else {
             return false;

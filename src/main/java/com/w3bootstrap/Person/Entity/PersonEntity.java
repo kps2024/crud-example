@@ -26,6 +26,9 @@ public class PersonEntity {
 
     @Column(name = "profile_picture")
     private String profilePicture;
+
+    @Column(name = "document")
+    private String document;
     
     public void setAge(int age){
         if(age >=0 ) {

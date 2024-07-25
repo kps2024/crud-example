@@ -9,5 +9,6 @@ public class PersonDTO {
     private String name;
     private int age;
     private String profilePicture;
+    private String document;
     
 }
